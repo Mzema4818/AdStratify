@@ -1,11 +1,16 @@
 // AdStrat.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!!\n";
+// Declare the function prototype here
+void displayCSVData(const char* filename);
+
+using namespace std;
+
+int main() {
+    const char* filename = "../ad_click_dataset.csv";  // Path to your CSV file
+    displayCSVData(filename);  // Call the function to display the CSV data
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
