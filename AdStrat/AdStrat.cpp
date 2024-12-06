@@ -25,4 +25,7 @@ int main() {
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 
 
+<<<<<<< HEAD
 // hello
+=======
+>>>>>>> a83ba0a9d6a7ff271384a62baa3c484b75d9ff25
