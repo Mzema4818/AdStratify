@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdStrat.cpp" />
+    <ClCompile Include="DataImputer.cpp" />
     <ClCompile Include="ImportedData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
