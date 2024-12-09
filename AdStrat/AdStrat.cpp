@@ -25,9 +25,3 @@ int main() {
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 922163a3dfe6a60ce2a74c561b805b88a7b1fb33
