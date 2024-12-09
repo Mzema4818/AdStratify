@@ -1,6 +1,5 @@
-// AdStrat.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 #include <iostream>
+#include "RandomForest.h"
 
 // Declare the function prototype here
 void displayCSVData(const char* filename);
@@ -8,13 +7,16 @@ void displayCSVData(const char* filename);
 using namespace std;
 
 int main() {
-    const char* filename = "../ad_click_dataset.csv";  // Path to your CSV file
-    displayCSVData(filename);  // Call the function to display the CSV data
-    return 0;
-}
+    //const char* filename = "../ad_click_dataset.csv";  // Path to your CSV file
+    //displayCSVData(filename);  // Call the function to display the CSV data
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+    vector<DataPoint> trainingData = {
+        {25, "Male", "Mobile", "Top", "Shopping", "Morning", 1},
+        {34, "Female", "Desktop", "Side", "News", "Afternoon", 0},
+        {45, "Non-Binary", "Tablet", "Bottom", "Entertainment", "Evening", 1},
+    };
+
+    vector<string> attributes = { "gender", "deviceType", "adPosition", "browsingHistory", "timeOfDay" };
 
 // Tips for Getting Started: 
 //   1. Use the Solution Explorer window to add/manage files
@@ -23,3 +25,9 @@ int main() {
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 922163a3dfe6a60ce2a74c561b805b88a7b1fb33

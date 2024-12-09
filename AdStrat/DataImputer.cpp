@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int main() {
+int test() {
     vector<vector<double>> data = {
         {1, 2, 3},
         {4, NAN, 6},
