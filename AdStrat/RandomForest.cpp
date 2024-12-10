@@ -1,4 +1,6 @@
 #include "RandomForest.h"
+#include "global.h"
+#include <iostream> // For displaying progress
 
 namespace std {
 
@@ -143,7 +145,13 @@ namespace std {
             selectedAttributes.resize(3); // Choose a subset of attributes
 
             trees.push_back(buildDecisionTree(sample, selectedAttributes));
+
+            // Display progress after each tree is built
+            double progress = static_cast<double>(i + 1) / numTrees * 100;
+            std::cout << "Training progress: " << progress << "% (" << i + 1 << " out of " << numTrees << " trees trained)\r";
+            std::cout.flush();
         }
+        std::cout << std::endl; // Move to the next line after progress display
     }
 
     int RandomForest::predict(const DataPoint& point) {

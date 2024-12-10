@@ -27,9 +27,21 @@
     <ClCompile Include="RandomForest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RandomForest.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportedData.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataImputer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,20 +6,10 @@
 #include <random>
 #include <algorithm>
 #include <map>
+#include "ImportedData.h"
+#include "global.h"
 
 namespace std {
-
-    // Define the structure for data points
-    struct DataPoint {
-        int age;
-        string gender;
-        string deviceType;
-        string adPosition;
-        string browsingHistory;
-        string timeOfDay;
-        int click; // 1 for click, 0 for no click
-    };
-
     // Define the structure for decision tree nodes
     struct TreeNode {
         string splitAttribute;

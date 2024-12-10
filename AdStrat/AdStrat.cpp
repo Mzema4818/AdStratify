@@ -1,27 +1,47 @@
 #include <iostream>
+#include "ImportedData.h"
+#include "DataImputer.h"
 #include "RandomForest.h"
-
-// Declare the function prototype here
-void displayCSVData(const char* filename);
 
 using namespace std;
 
 int main() {
-    //const char* filename = "../ad_click_dataset.csv";  // Path to your CSV file
-    //displayCSVData(filename);  // Call the function to display the CSV data
+    // Initialize the loader with the correct file path
+    ImportedData loader("../ad_click_dataset.csv");
+    DataImputer imputer;
 
-    vector<DataPoint> trainingData = {
-        {25, "Male", "Mobile", "Top", "Shopping", "Morning", 1},
-        {34, "Female", "Desktop", "Side", "News", "Afternoon", 0},
-        {45, "Non-Binary", "Tablet", "Bottom", "Entertainment", "Evening", 1},
-    };
+    // Load data and display if successful
+    if (loader.loadData()) {
+        std::vector<DataPoint>& dataPoints = loader.getDataPoints();
+        imputer.impute(dataPoints);
+        cout << "Running";
+        //loader.displayData();
 
-    vector<string> attributes = { "gender", "deviceType", "adPosition", "browsingHistory", "timeOfDay" };
+        vector<string> attributes = {"gender", "deviceType", "adPosition", "browsingHistory", "timeOfDay"};
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+        RandomForest rf(10);
+        rf.train(dataPoints, attributes);
+
+        std::vector<DataPoint> predictPoints = {
+            {0, "Non-Binary", "Mobile", "Bottom", "Shopping", "Morning", -1},
+            {47, "Non-Binary", "Mobile", "Side", "Education", "Afternoon", -1},
+            {21, "Female", "Desktop", "Top", "News", "Night", -1},
+            {45, "Male", "Tablet", "Side", "Shopping", "Evening", -1},
+            {18, "Non-Binary", "Desktop", "Bottom", "News", "Morning", -1},
+            {64, "Female", "Mobile", "Top", "Entertainment", "Night", -1},
+            {47, "Female", "Tablet", "Bottom", "Entertainment", "Evening", -1}
+        };
+
+        // Loop through the data points and predict the 'click' value
+        for (const auto& point : predictPoints) {
+            int prediction = rf.predict(point);
+            std::cout << "Prediction: " << prediction << std::endl;
+        }
+
+    }
+    else {
+        cerr << "Data loading failed!" << endl;
+    }
+
+    return 0;
+}
