@@ -30,6 +30,12 @@
     <ClCompile Include="global.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SuggestionMaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegressionTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RandomForest.h">
@@ -42,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="global.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SuggestionMaker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegressionTests.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

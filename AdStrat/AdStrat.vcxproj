@@ -145,12 +145,16 @@
     <ClCompile Include="global.cpp" />
     <ClCompile Include="ImportedData.cpp" />
     <ClCompile Include="RandomForest.cpp" />
+    <ClCompile Include="RegressionTests.cpp" />
+    <ClCompile Include="SuggestionMaker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataImputer.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="ImportedData.h" />
     <ClInclude Include="RandomForest.h" />
+    <ClInclude Include="RegressionTests.h" />
+    <ClInclude Include="SuggestionMaker.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
