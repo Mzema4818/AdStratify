@@ -2,6 +2,7 @@
 #include <chrono>
 #include <algorithm> // For transform
 #include <cctype>    // For tolower
+#include <limits>    // For numeric_limits
 #include "ImportedData.h"
 #include "DataImputer.h"
 #include "RegressionTests.h"
@@ -120,8 +121,8 @@ void userAdInteraction(vector<DataPoint>& dataPoints, vector<string>& attributes
 
         // Browsing history input with validation
         do {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
             cout << "Browsing History (Shopping, News, Entertainment, Education, Social Media): ";
-            cin.ignore(); // Clear leftover characters
             getline(cin, userPoint.browsingHistory);
             if (!isValidBrowsingHistory(userPoint.browsingHistory)) {
                 cout << "Invalid browsing history! Please choose from Shopping, News, Entertainment, Education, or Social Media.\n";
@@ -195,6 +196,7 @@ int main() {
 
     return 0;
 }
+
 
 
 
