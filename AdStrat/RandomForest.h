@@ -40,11 +40,22 @@ namespace std {
         vector<TreeNode*> trees;
 
     public:
-        RandomForest(int n);
+        RandomForest(int n); // Constructor
+
+        // Train the Random Forest model
         void train(const vector<DataPoint>& data, const vector<string>& attributes);
+
+        // Predict the outcome for a data point
         int predict(const DataPoint& point);
+
+        // Getter for number of trees (debugging purposes)
+        int getNumTrees() const { return trees.size(); }
+
+        // Predict using a specific tree (debugging purposes)
+        int predictWithTree(const DataPoint& point, int treeIndex) const;
     };
 
 } // namespace std
 
-#endif
+#endif // RANDOM_FOREST_H
+

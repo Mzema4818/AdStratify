@@ -140,7 +140,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AdStrat.cpp" />
+    <ClCompile Include="AdStrat.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
+    </ClCompile>
     <ClCompile Include="DataImputer.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="ImportedData.cpp" />

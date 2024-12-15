@@ -22,20 +22,20 @@ namespace std {
         const string& attribute,
         const string& value) {
 
-        vector<DataPoint> left, right;
+        vector<DataPoint> leftSplit, rightSplit;
         for (const auto& dp : data) {
             if ((attribute == "gender" && dp.gender == value) ||
                 (attribute == "deviceType" && dp.deviceType == value) ||
                 (attribute == "adPosition" && dp.adPosition == value) ||
                 (attribute == "browsingHistory" && dp.browsingHistory == value) ||
                 (attribute == "timeOfDay" && dp.timeOfDay == value)) {
-                left.push_back(dp);
+                leftSplit.push_back(dp);
             }
             else {
-                right.push_back(dp);
+                rightSplit.push_back(dp);
             }
         }
-        return { left, right };
+        return { leftSplit, rightSplit };
     }
 
     // Build a decision tree
@@ -69,7 +69,7 @@ namespace std {
         // Find the best split
         double bestGini = 1.0;
         string bestAttribute, bestValue;
-        vector<DataPoint> bestLeft, bestRight;
+        vector<DataPoint> bestLeftSplit, bestRightSplit;
 
         for (const auto& attr : attributes) {
             vector<string> uniqueValues;
@@ -84,21 +84,24 @@ namespace std {
             uniqueValues.erase(unique(uniqueValues.begin(), uniqueValues.end()), uniqueValues.end());
 
             for (const auto& value : uniqueValues) {
-                auto [left, right] = splitData(data, attr, value);
-                double gini = (static_cast<double>(left.size()) / data.size()) * calculateGini(left) +
-                    (static_cast<double>(right.size()) / data.size()) * calculateGini(right);
+                auto splitResult = splitData(data, attr, value);
+                auto& leftSplit = splitResult.first;
+                auto& rightSplit = splitResult.second;
+
+                double gini = (static_cast<double>(leftSplit.size()) / data.size()) * calculateGini(leftSplit) +
+                    (static_cast<double>(rightSplit.size()) / data.size()) * calculateGini(rightSplit);
 
                 if (gini < bestGini) {
                     bestGini = gini;
                     bestAttribute = attr;
                     bestValue = value;
-                    bestLeft = left;
-                    bestRight = right;
+                    bestLeftSplit = leftSplit;
+                    bestRightSplit = rightSplit;
                 }
             }
         }
 
-        if (bestLeft.empty() || bestRight.empty()) {
+        if (bestLeftSplit.empty() || bestRightSplit.empty()) {
             TreeNode* leaf = new TreeNode();
             leaf->prediction = count_if(data.begin(), data.end(), [](const DataPoint& dp) { return dp.click == 1; }) >= data.size() / 2 ? 1 : 0;
             return leaf;
@@ -107,8 +110,8 @@ namespace std {
         TreeNode* root = new TreeNode();
         root->splitAttribute = bestAttribute;
         root->splitValue = bestValue;
-        root->left = buildDecisionTree(bestLeft, attributes);
-        root->right = buildDecisionTree(bestRight, attributes);
+        root->left = buildDecisionTree(bestLeftSplit, attributes);
+        root->right = buildDecisionTree(bestRightSplit, attributes);
 
         return root;
     }
@@ -164,4 +167,13 @@ namespace std {
         return (ones > predictions.size() / 2) ? 1 : 0;
     }
 
+    int RandomForest::predictWithTree(const DataPoint& point, int treeIndex) const {
+        if (treeIndex < 0 || treeIndex >= trees.size()) {
+            cerr << "Error: Tree index out of range!" << endl;
+            return -1; // Indicating an invalid prediction
+        }
+        return predictTree(trees[treeIndex], point);
+    }
+
 } // namespace std
+
