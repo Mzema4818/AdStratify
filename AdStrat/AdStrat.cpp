@@ -60,7 +60,6 @@ void testEfficiency(vector<DataPoint>& dataPoints, vector<string>& attributes, i
 void testScalability(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
     cout << "\n--- Scalability Testing ---" << endl;
 
-    // Define four specific dataset sizes for testing
     vector<size_t> datasetSizes = { dataPoints.size() / 4, dataPoints.size() / 2, (3 * dataPoints.size()) / 4, dataPoints.size() };
 
     for (size_t datasetSize : datasetSizes) {
@@ -90,7 +89,6 @@ void testScalability(vector<DataPoint>& dataPoints, vector<string>& attributes, 
 void testAccuracy(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
     cout << "\n--- Accuracy Testing ---" << endl;
 
-    // Train the RandomForest model
     RandomForest rf = trainRandomForest(dataPoints, attributes, numTrees);
 
     int correctPredictions = 0;
@@ -111,12 +109,10 @@ void testAccuracy(vector<DataPoint>& dataPoints, vector<string>& attributes, int
 void userAdInteraction(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
     cout << "\n--- User Ad Interaction ---" << endl;
 
-    // Train the RandomForest model on the full dataset
     RandomForest rf = trainRandomForest(dataPoints, attributes, numTrees);
 
     char repeat = 'y';
     while (repeat == 'y' || repeat == 'Y') {
-        // Prompt the user for input
         DataPoint userPoint;
         cout << "Enter the following details:\n";
 
@@ -129,96 +125,76 @@ void userAdInteraction(vector<DataPoint>& dataPoints, vector<string>& attributes
             }
         } while (userPoint.age < 18 || userPoint.age > 64);
 
-        // Gender input
         cout << "Gender (Male/Female/Non-Binary): ";
         cin >> userPoint.gender;
 
-        // Device type input
         cout << "Device Type (Desktop/Tablet/Mobile): ";
         cin >> userPoint.deviceType;
 
-        // Current ad position input
         cout << "Current Ad Position (Top/Side/Bottom): ";
         cin >> userPoint.adPosition;
 
-        // Browsing history input with validation
         do {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear input buffer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cout << "Browsing History (Shopping, News, Entertainment, Education, Social Media): ";
             getline(cin, userPoint.browsingHistory);
             if (!isValidBrowsingHistory(userPoint.browsingHistory)) {
-                cout << "Invalid browsing history! Please choose from Shopping, News, Entertainment, Education, or Social Media.\n";
+                cout << "Invalid browsing history! Choose from Shopping, News, Entertainment, Education, or Social Media.\n";
             }
         } while (!isValidBrowsingHistory(userPoint.browsingHistory));
 
-        // Time of day input
         cout << "Time of Day (Morning/Afternoon/Evening/Night): ";
         cin >> userPoint.timeOfDay;
 
-        // Predict the click outcome for the user's input
         int prediction = rf.predict(userPoint);
         cout << "Prediction: " << (prediction == 1 ? "Click (ad is effective)" : "No Click (ad is not effective)") << endl;
 
-        // Suggest a better ad placement if the prediction is "No Click"
         if (prediction == 0) {
             vector<string> possiblePlacements = { "Top", "Side", "Bottom" };
             string suggestion = suggestAdPlacement(userPoint, possiblePlacements, rf);
-            if (suggestion != "None") {
-                cout << "Suggested better ad placement: " << suggestion << endl;
-            }
-            else {
-                cout << "No better ad placement found." << endl;
-            }
+            cout << "Suggested better ad placement: " << (suggestion != "None" ? suggestion : "No better ad placement found.") << endl;
         }
 
-        // Ask if the user wants another suggestion
         cout << "\nWould you like to enter another configuration? (y/n): ";
         cin >> repeat;
     }
 }
 
 int main() {
-    // Prompt user for dataset file path
     string filePath;
     cout << "Enter the path to the dataset file (e.g., ../ad_click_dataset.csv): ";
     cin >> filePath;
 
-    // Load the dataset
     ImportedData loader(filePath);
     if (!loader.loadData()) {
         cerr << "Data loading failed! Check the file path and try again." << endl;
         return 1;
     }
 
-    // Prompt user for the number of trees
     int numTrees;
-    cout << "Enter the number of trees to train (max 10): ";
+    cout << "Enter the number of trees to train (max 100): ";
     cin >> numTrees;
 
-    // Validate the number of trees
-    if (numTrees < 1 || numTrees > 10) {
-        cerr << "Invalid number of trees. Please enter a number between 1 and 10." << endl;
+    if (numTrees < 1 || numTrees > 100) {
+        cerr << "Invalid number of trees. Please enter a number between 1 and 100." << endl;
         return 1;
     }
 
-    // Preprocess the dataset
     DataImputer imputer;
     vector<DataPoint>& dataPoints = loader.getDataPoints();
     imputer.impute(dataPoints);
 
-    // Define attributes for RandomForest
     vector<string> attributes = { "gender", "deviceType", "adPosition", "browsingHistory", "timeOfDay" };
 
-    // Perform non-functional requirement tests
     testEfficiency(dataPoints, attributes, numTrees);
     testScalability(dataPoints, attributes, numTrees);
     testAccuracy(dataPoints, attributes, numTrees);
 
-    // Allow user interaction for personalized predictions and suggestions
     userAdInteraction(dataPoints, attributes, numTrees);
 
     return 0;
 }
+
 
 
 
