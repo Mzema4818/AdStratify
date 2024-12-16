@@ -105,6 +105,46 @@ void testAccuracy(vector<DataPoint>& dataPoints, vector<string>& attributes, int
     cout << "Accuracy of the Random Forest model: " << accuracy << "%" << endl;
 }
 
+void testCases(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
+    // Train the RandomForest model once and pass it to the test function
+    cout << "\n--- Test Cases ---" << endl;
+    RandomForest rf = trainRandomForest(dataPoints, attributes, numTrees);
+
+    // Define test cases
+    vector<DataPoint> testCases = {
+        {25, "Male", "Desktop", "Bottom", "News", "Morning", -1},        // Test case 1
+        {47, "Female", "Tablet", "Side", "Education", "Afternoon", -1},   // Test case 2
+        {18, "Non-Binary", "Mobile", "Top", "Entertainment", "Night", -1}, // Test case 3
+        {30, "Male", "Mobile", "Top", "Shopping", "Evening", -1},         // Test case 4
+        {42, "Female", "Desktop", "Side", "Technology", "Morning", -1},   // Test case 5
+        {51, "Non-Binary", "Tablet", "Bottom", "Health", "Afternoon", -1},// Test case 6
+        {29, "Male", "Desktop", "Top", "News", "Night", -1},              // Test case 7
+        {21, "Non-Binary", "Mobile", "Top", "Gaming", "Afternoon", -1}    // Test case 8
+    };
+
+    vector<int> expectedPredictions = { 0, 1, 1, 0, 1, 1, 1, 1 };
+    vector<string> expectedSuggestions = { "Top", "None", "None", "Side", "None", "Bottom", "Top", "None" };
+
+    // Run the regression tests
+    runRegressionTests(rf, testCases, expectedPredictions, expectedSuggestions);
+
+    // Now, let's use static data for a single prediction (as per your request)
+    vector<string> possiblePlacements = { "Top", "Side", "Bottom" };
+    DataPoint userPoint = { 21, "Non-Binary", "Mobile", "Top", "Gaming", "Afternoon", -1 };
+
+    int prediction = rf.predict(userPoint);
+
+    cout << "Prediction: " << prediction;
+
+    if (prediction == 0) {
+        string suggestion = suggestAdPlacement(userPoint, possiblePlacements, rf);
+        cout << " | Suggested placement: " << suggestion << endl;
+    }
+    else {
+        cout << endl;
+    }
+}
+
 // Function to interact with the user and provide ad suggestions
 void userAdInteraction(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
     cout << "\n--- User Ad Interaction ---" << endl;
@@ -189,6 +229,7 @@ int main() {
     testEfficiency(dataPoints, attributes, numTrees);
     testScalability(dataPoints, attributes, numTrees);
     testAccuracy(dataPoints, attributes, numTrees);
+    testCases(dataPoints, attributes, numTrees);
 
     userAdInteraction(dataPoints, attributes, numTrees);
 
