@@ -13,6 +13,7 @@ using namespace std;
 // Function Declarations
 void testEfficiency(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees);
 void testScalability(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees);
+void testAccuracy(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees);
 bool isValidBrowsingHistory(const string& browsingHistory);
 void userAdInteraction(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees);
 
@@ -83,6 +84,27 @@ void testScalability(vector<DataPoint>& dataPoints, vector<string>& attributes, 
             << chrono::duration_cast<chrono::milliseconds>(end - start).count()
             << " ms" << endl;
     }
+}
+
+// Function to test accuracy
+void testAccuracy(vector<DataPoint>& dataPoints, vector<string>& attributes, int numTrees) {
+    cout << "\n--- Accuracy Testing ---" << endl;
+
+    // Train the RandomForest model
+    RandomForest rf = trainRandomForest(dataPoints, attributes, numTrees);
+
+    int correctPredictions = 0;
+    int totalPredictions = dataPoints.size();
+
+    for (const auto& dp : dataPoints) {
+        int prediction = rf.predict(dp);
+        if (prediction == dp.click) { // Assuming 'click' holds the actual outcome (1 for click, 0 for no click)
+            correctPredictions++;
+        }
+    }
+
+    double accuracy = (static_cast<double>(correctPredictions) / totalPredictions) * 100.0;
+    cout << "Accuracy of the Random Forest model: " << accuracy << "%" << endl;
 }
 
 // Function to interact with the user and provide ad suggestions
@@ -190,12 +212,14 @@ int main() {
     // Perform non-functional requirement tests
     testEfficiency(dataPoints, attributes, numTrees);
     testScalability(dataPoints, attributes, numTrees);
+    testAccuracy(dataPoints, attributes, numTrees);
 
     // Allow user interaction for personalized predictions and suggestions
     userAdInteraction(dataPoints, attributes, numTrees);
 
     return 0;
 }
+
 
 
 
